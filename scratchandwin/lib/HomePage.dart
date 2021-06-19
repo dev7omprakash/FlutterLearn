@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
       this.itemArray[luckyNumber] = "lucky";
       this.messagedia = "YOU HACKED THE GAME !😎 RESET TO PLAY AGAIN";
       this.message = "";
+      this.win = true;
     });
   }
 
