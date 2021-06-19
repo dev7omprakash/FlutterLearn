@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   int count = 0;
   bool win = false;
   String message = "YOU HAVE 6 MOVES";
+  String messagedia = "";
 
 //TODO:INTIALIZE THE ARRAY AND VARIABLES
   @override
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       this.win = false;
       this.message = "YOU HAVE 6 MOVES";
+      this.messagedia = "";
       this.count = 0;
       this.itemArray = List<String>.generate(16, (index) => "empty");
       getLuckyNumber();
@@ -59,24 +61,28 @@ class _HomePageState extends State<HomePage> {
   playGame(int index) {
     if (!this.win && this.count < 6) {
       this.count++;
-      this.message = "YOU HAVE " + (6 - this.count).toString() + " MOVES LEFT";
+      this.message =
+          "YOU HAVE " + (6 - this.count).toString() + " MOVES LEFT 🤞";
       if (luckyNumber == index) {
         setState(() {
           this.win = true;
-          this.message = "YOU WON";
+          this.messagedia = "YOU WON 🎉🤗";
           itemArray[index] = "lucky";
         });
       } else {
         setState(() {
           itemArray[index] = "unlucky";
+          if (this.count == 6) {
+            this.messagedia = "GAME DRAWN !😒,CLICK RESET || SHOW ALL";
+          }
         });
       }
     } else {
       setState(() {
         if (!this.win && this.count == 6) {
-          this.message = "GAME DRAWN, RESET | SHOW ALL";
+          this.messagedia = "GAME DRAWN !😒,CLICK RESET || SHOW ALL";
         } else {
-          this.message = "YOU CAN'T PLAY YOU CAN RESET!";
+          this.messagedia = "YOU CAN'T PLAY 🤔, RESET TO PLAY!👍";
         }
       });
     }
@@ -88,7 +94,8 @@ class _HomePageState extends State<HomePage> {
       this.win = false;
       this.itemArray = List<String>.filled(16, "empty");
       this.count = 0;
-      this.message = "YOU HAVE 6 MOVES";
+      this.message = "YOU HAVE 6 MOVES! 🤞";
+      this.messagedia = "YOU RESET THE GAME !🙄";
       getLuckyNumber();
     });
   }
@@ -98,8 +105,39 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       this.itemArray = List<String>.filled(16, "unlucky");
       this.itemArray[luckyNumber] = "lucky";
-      this.message = "YOU HACKED THE GAME!";
+      this.messagedia = "YOU HACKED THE GAME !😎 RESET TO PLAY AGAIN";
+      this.message = "";
     });
+  }
+
+  //Dialogue box
+
+  optionsDialogBox() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.teal[300],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  GestureDetector(
+                    child: Text(this.messagedia,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        )),
+                    onTap: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -129,6 +167,7 @@ class _HomePageState extends State<HomePage> {
                 child: RaisedButton(
                   onPressed: () {
                     this.playGame(i);
+                    if (this.count == 6 || this.win) optionsDialogBox();
                   },
                   child: Image(
                     image: this.getImage(i),
@@ -154,6 +193,7 @@ class _HomePageState extends State<HomePage> {
             margin: EdgeInsets.all(8.0),
             child: RaisedButton(
               onPressed: () {
+                this.optionsDialogBox();
                 this.showAll();
               },
               color: Colors.blueGrey[800],
@@ -168,6 +208,7 @@ class _HomePageState extends State<HomePage> {
             margin: EdgeInsets.all(10.0),
             child: RaisedButton(
               onPressed: () {
+                this.optionsDialogBox();
                 this.resetGame();
               },
               color: Colors.blueGrey[800],
