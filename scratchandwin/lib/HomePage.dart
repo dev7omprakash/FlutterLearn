@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                 this.message,
                 style: TextStyle(
                   color: Colors.blueGrey[800],
-                  fontSize: 20.0,
+                  fontSize: 25.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
