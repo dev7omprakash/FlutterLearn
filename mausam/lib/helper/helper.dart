@@ -1,15 +1,11 @@
 import 'package:http/http.dart';
 import 'dart:convert';
 
-class Helper
-{
-
-   late String location;
-  Helper({required this.location})
-  {
+class Helper {
+  late String location;
+  Helper({required this.location}) {
     location = this.location;
   }
-
 
   late String temp;
   late String humidity;
@@ -18,13 +14,14 @@ class Helper
   late String main;
   late String icon;
 
+  late String token;
 
   //method
-  Future<void> getData() async
-  {
-    try{
-      var response  =await get(
-        Uri.parse("http://api.openweathermap.org/data/2.5/weather?q=$location&appid=4746ef10e233c181cdae7fed11e48c85"),
+  Future<void> getData() async {
+    try {
+      var response = await get(
+        Uri.parse(
+            "http://api.openweathermap.org/data/2.5/weather?q=$location&appid=$token"),
       );
       Map data = jsonDecode(response.body);
       Map temp_data = data['main'];
@@ -32,8 +29,7 @@ class Helper
       double getTemp = temp_data['temp'] - 273.15;
 
       Map wind = data['wind'];
-      double getAir_speed = wind["speed"]/0.27777777777778;
-
+      double getAir_speed = wind["speed"] / 0.27777777777778;
 
       //Getting Description
       List weather_data = data['weather'];
@@ -48,9 +44,7 @@ class Helper
       description = getDesc;
       main = getMain_des;
       icon = weather_main_data["icon"].toString();
-
-    }catch(e)
-    {
+    } catch (e) {
       print(e);
       temp = "NA";
       humidity = "NA";
@@ -59,10 +53,5 @@ class Helper
       main = "NA";
       icon = "09d";
     }
-
-
-
   }
-
-
 }
