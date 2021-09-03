@@ -9,7 +9,7 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
-  String city = "MADHUBANI";
+  late String city = "Madhubani";
   late String temp;
   late String hum;
   late String air_speed;
@@ -20,34 +20,40 @@ class _LoadingPageState extends State<LoadingPage> {
   Future<void> startApp(String city) async {
     Helper instance = Helper(location: city);
     await instance.getData();
-
     temp = instance.temp;
     hum = instance.humidity;
     air_speed = instance.air_speed;
     des = instance.description;
     main = instance.main;
     icon = instance.icon;
+
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, '/home', arguments: {
-        "temp_value": temp.toString(),
-        "hum_value": hum.toString(),
-        "air_speed_value": air_speed.toString(),
-        "des_value": des.toString(),
-        "main_value": main.toString(),
-        "icon_value": icon.toString(),
-        "city_value": city.toString(),
+        "temp_value": temp,
+        "hum_value": hum,
+        "air_speed_value": air_speed,
+        "des_value": des,
+        "main_value": main,
+        "icon_value": icon,
+        "city_value": city,
       });
     });
   }
 
   @override
   void initState() {
-    startApp(this.city);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    Map? search = {};
+    search = ModalRoute.of(context)!.settings.arguments as Map?;
+
+    if (search?.isNotEmpty ?? false) {
+      city = search!['searchText'];
+    }
+    startApp(city);
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -93,7 +99,7 @@ class _LoadingPageState extends State<LoadingPage> {
           ),
         ),
       ),
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.purple.shade200,
     );
   }
 }

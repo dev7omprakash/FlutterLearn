@@ -13,7 +13,6 @@ class Helper {
   late String description;
   late String main;
   late String icon;
-
   late String token;
 
   //method
